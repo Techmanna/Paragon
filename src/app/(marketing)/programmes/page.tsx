@@ -4,9 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, SearchX } from "lucide-react";
 import { FadeIn } from "@/components/shared/fade-in";
+import { ProgrammeCard } from "@/features/programmes/programme-card";
 
 import { programmes } from "@/data/programmes";
 import { pillars } from "@/data/pillars";
+import { FilterButton } from "@/components/shared/filter-button";
 
 // Extract categories dynamically from pillars or programmes if needed, 
 // but since pillars defines the categories, we can use that.
@@ -30,18 +32,12 @@ export default function Programmes() {
           
           <div className="flex overflow-x-auto pb-4 gap-2 no-scrollbar">
             {CATEGORIES.map(cat => (
-              <button 
+              <FilterButton
                 key={cat}
+                label={cat}
+                isActive={activeCategory === cat}
                 onClick={() => setActiveCategory(cat)}
-                disabled={activeCategory === cat}
-                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue focus-visible:ring-offset-2 ${
-                  activeCategory === cat 
-                    ? "bg-accent-blue text-white cursor-not-allowed opacity-90 pointer-events-none" 
-                    : "bg-white text-muted-foreground border border-border hover:border-accent-blue"
-                }`}
-              >
-                {cat}
-              </button>
+              />
             ))}
           </div>
         </div>
@@ -55,23 +51,13 @@ export default function Programmes() {
                 const pillar = pillars.find(p => p.slug === prog.pillar);
                 return (
                   <FadeIn key={prog.slug} delay={i * 0.1} className="h-full">
-                    <Link href={`/programmes/${prog.slug}`} className="block h-full rounded-2xl overflow-hidden border border-border group cursor-pointer hover:shadow-md transition">
-                      <div className="aspect-[4/3] bg-muted overflow-hidden relative">
-                        <div className="absolute inset-0 bg-accent-blue/5 flex items-center justify-center text-muted-foreground/50 group-hover:scale-105 transition-transform duration-300">
-                          [Image Placeholder]
-                        </div>
-                      </div>
-                      <div className="p-6">
-                        <span className="inline-block text-xs px-2.5 py-1 rounded-full bg-accent-blue/10 text-accent-blue font-medium mb-3">
-                          {pillar?.name || prog.pillar}
-                        </span>
-                        <h3 className="text-lg font-semibold text-foreground mb-2">{prog.name}</h3>
-                        <p className="text-sm text-muted-foreground mb-4">{prog.summary}</p>
-                        <div className="flex items-center text-accent-blue text-sm font-medium">
-                          View details <ArrowRight className="w-4 h-4 ml-1" />
-                        </div>
-                      </div>
-                    </Link>
+                    <ProgrammeCard
+                      slug={prog.slug}
+                      name={prog.name}
+                      category={pillar?.name || prog.pillar}
+                      description={prog.summary}
+                      className="h-full"
+                    />
                   </FadeIn>
                 );
               })}

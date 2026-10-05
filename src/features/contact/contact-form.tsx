@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { CheckCircle2, Loader2, AlertCircle } from "lucide-react";
 import Link from "next/link";
-import { submitContactEnquiry } from "./actions";
+import { submitWeb3Form } from "@/lib/web3Form";
 
 interface FormErrors {
   purpose?: string;
@@ -18,7 +18,7 @@ export function ContactForm({ className }: { className?: string }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  
+
   const [values, setValues] = useState({
     purpose: "",
     fullName: "",
@@ -74,7 +74,7 @@ export function ContactForm({ className }: { className?: string }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validate all fields on submit
     const newErrors = {
       purpose: validate("purpose", values.purpose),
@@ -82,7 +82,7 @@ export function ContactForm({ className }: { className?: string }) {
       email: validate("email", values.email),
       message: validate("message", values.message)
     };
-    
+
     setErrors(newErrors);
     setTouched({ purpose: true, fullName: true, email: true, message: true });
 
@@ -92,18 +92,16 @@ export function ContactForm({ className }: { className?: string }) {
 
     setIsSubmitting(true);
     setSubmitError(null);
-    
-    const formData = new FormData();
-    Object.entries(values).forEach(([key, value]) => formData.append(key, value));
-    
-    const result = await submitContactEnquiry(formData);
-    
+
+    const subject = `New Contact Enquiry from ${values.fullName}`;
+    const result = await submitWeb3Form(values, subject);
+
     setIsSubmitting(false);
-    
+
     if (result.success) {
       setIsSuccess(true);
     } else {
-      setSubmitError(result.error || "An unexpected error occurred. Please try again.");
+      setSubmitError(typeof result.error === "string" ? result.error : "An unexpected error occurred. Please try again.");
     }
   };
 
@@ -122,7 +120,7 @@ export function ContactForm({ className }: { className?: string }) {
             setValues({ purpose: "", fullName: "", organisation: "", email: "", phone: "", message: "" });
             setTouched({});
             setErrors({});
-          }} variant="outline" className="rounded-full px-6 bg-transparent transition-all duration-150 ease-in-out hover:scale-[1.02] motion-reduce:transform-none">
+          }} variant="outline" className="rounded-full px-6 py-5 bg-transparent transition-all duration-150 ease-in-out hover:scale-[1.02] motion-reduce:transform-none">
             Send another message
           </Button>
         </div>
@@ -145,8 +143,8 @@ export function ContactForm({ className }: { className?: string }) {
       )}
       <div className="space-y-2">
         <label htmlFor="purpose" className="block text-sm font-medium text-foreground">I am a... <span className="text-destructive">*</span></label>
-        <select 
-          id="purpose" 
+        <select
+          id="purpose"
           name="purpose"
           value={values.purpose}
           onChange={handleChange}
@@ -170,13 +168,13 @@ export function ContactForm({ className }: { className?: string }) {
         </select>
         <InputError message={errors.purpose} id="purpose" />
       </div>
-      
+
       <div className="grid sm:grid-cols-2 gap-6">
         <div className="space-y-2">
           <label htmlFor="fullName" className="block text-sm font-medium text-foreground">Full name <span className="text-destructive">*</span></label>
-          <input 
-            type="text" 
-            id="fullName" 
+          <input
+            type="text"
+            id="fullName"
             name="fullName"
             value={values.fullName}
             onChange={handleChange}
@@ -188,20 +186,20 @@ export function ContactForm({ className }: { className?: string }) {
             className={cn(
               "w-full px-4 py-3 rounded-lg border bg-surface text-foreground focus:outline-none focus:ring-2 focus:ring-accent-blue/50 min-h-[44px] transition-colors",
               errors.fullName ? "border-destructive focus:ring-destructive/50" : "border-border hover:border-accent-blue/50"
-            )} 
+            )}
           />
           <InputError message={errors.fullName} id="fullName" />
         </div>
         <div className="space-y-2">
           <label htmlFor="organisation" className="block text-sm font-medium text-foreground">Organisation <span className="text-muted-foreground font-normal">(Optional)</span></label>
-          <input 
-            type="text" 
-            id="organisation" 
+          <input
+            type="text"
+            id="organisation"
             name="organisation"
             value={values.organisation}
             onChange={handleChange}
             placeholder="Company or Entity"
-            className="w-full px-4 py-3 rounded-lg border border-border bg-surface text-foreground focus:outline-none focus:ring-2 focus:ring-accent-blue/50 min-h-[44px] hover:border-accent-blue/50 transition-colors" 
+            className="w-full px-4 py-3 rounded-lg border border-border bg-surface text-foreground focus:outline-none focus:ring-2 focus:ring-accent-blue/50 min-h-[44px] hover:border-accent-blue/50 transition-colors"
           />
         </div>
       </div>
@@ -209,9 +207,9 @@ export function ContactForm({ className }: { className?: string }) {
       <div className="grid sm:grid-cols-2 gap-6">
         <div className="space-y-2">
           <label htmlFor="email" className="block text-sm font-medium text-foreground">Email <span className="text-destructive">*</span></label>
-          <input 
-            type="email" 
-            id="email" 
+          <input
+            type="email"
+            id="email"
             name="email"
             value={values.email}
             onChange={handleChange}
@@ -223,30 +221,30 @@ export function ContactForm({ className }: { className?: string }) {
             className={cn(
               "w-full px-4 py-3 rounded-lg border bg-surface text-foreground focus:outline-none focus:ring-2 focus:ring-accent-blue/50 min-h-[44px] transition-colors",
               errors.email ? "border-destructive focus:ring-destructive/50" : "border-border hover:border-accent-blue/50"
-            )} 
+            )}
           />
           <InputError message={errors.email} id="email" />
         </div>
         <div className="space-y-2">
           <label htmlFor="phone" className="block text-sm font-medium text-foreground">Phone <span className="text-muted-foreground font-normal">(Optional)</span></label>
-          <input 
-            type="tel" 
-            id="phone" 
+          <input
+            type="tel"
+            id="phone"
             name="phone"
             value={values.phone}
             onChange={handleChange}
-            placeholder="+234 800 000 0000"
-            className="w-full px-4 py-3 rounded-lg border border-border bg-surface text-foreground focus:outline-none focus:ring-2 focus:ring-accent-blue/50 min-h-[44px] hover:border-accent-blue/50 transition-colors" 
+            placeholder="+234 906 791 8054"
+            className="w-full px-4 py-3 rounded-lg border border-border bg-surface text-foreground focus:outline-none focus:ring-2 focus:ring-accent-blue/50 min-h-[44px] hover:border-accent-blue/50 transition-colors"
           />
         </div>
       </div>
 
       <div className="space-y-2">
         <label htmlFor="message" className="block text-sm font-medium text-foreground">Message <span className="text-destructive">*</span></label>
-        <textarea 
-          id="message" 
+        <textarea
+          id="message"
           name="message"
-          rows={5} 
+          rows={5}
           value={values.message}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -262,8 +260,8 @@ export function ContactForm({ className }: { className?: string }) {
         <InputError message={errors.message} id="message" />
       </div>
 
-      <Button 
-        type="submit" 
+      <Button
+        type="submit"
         disabled={isSubmitting || !isFormValid()}
         className="w-full sm:w-auto px-8 py-6 rounded-full bg-accent-blue hover:bg-accent-blue/90 text-white border-0 font-semibold text-base disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px] transition-all duration-150 ease-in-out"
       >

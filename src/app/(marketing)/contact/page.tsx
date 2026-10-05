@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { SocialIcons } from "@/components/shared/social-icons";
+import { ContactForm } from "@/features/contact/contact-form";
 
 export default function Contact() {
   return (
@@ -13,46 +15,11 @@ export default function Contact() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16">
-            
+
             {/* Form */}
             <div>
               <h2 className="text-2xl font-bold mb-8">Send us a message</h2>
-              <form className="space-y-6">
-                <div className="space-y-2">
-                  <label htmlFor="purpose" className="block text-sm font-medium">I am a...</label>
-                  <select id="purpose" className="w-full px-4 py-3 rounded-lg border border-border bg-surface text-foreground focus:outline-none focus:ring-2 focus:ring-accent-blue/50">
-                    <option>Prospective Partner / Funder</option>
-                    <option>Programme Applicant</option>
-                    <option>Media / Press</option>
-                    <option>Other</option>
-                  </select>
-                </div>
-                
-                <div className="grid sm:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label htmlFor="firstName" className="block text-sm font-medium">First Name</label>
-                    <input type="text" id="firstName" className="w-full px-4 py-3 rounded-lg border border-border bg-surface focus:outline-none focus:ring-2 focus:ring-accent-blue/50" />
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="lastName" className="block text-sm font-medium">Last Name</label>
-                    <input type="text" id="lastName" className="w-full px-4 py-3 rounded-lg border border-border bg-surface focus:outline-none focus:ring-2 focus:ring-accent-blue/50" />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="email" className="block text-sm font-medium">Email Address</label>
-                  <input type="email" id="email" className="w-full px-4 py-3 rounded-lg border border-border bg-surface focus:outline-none focus:ring-2 focus:ring-accent-blue/50" />
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="message" className="block text-sm font-medium">Message</label>
-                  <textarea id="message" rows={5} className="w-full px-4 py-3 rounded-lg border border-border bg-surface focus:outline-none focus:ring-2 focus:ring-accent-blue/50"></textarea>
-                </div>
-
-                <Button type="button" className="w-full px-8 py-6 rounded-full bg-accent-blue hover:bg-accent-blue/90 text-white border-0 font-semibold text-lg">
-                  Submit Enquiry
-                </Button>
-              </form>
+              <ContactForm />
             </div>
 
             {/* Office Details */}
@@ -70,21 +37,30 @@ export default function Contact() {
                 <div>
                   <h3 className="font-semibold text-lg mb-2">Contact</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    hello@paragon.ng<br />
-                    +234 (0) XXX XXX XXXX
+                    paragonresearchers@gmail.com<br />
+                    +234 906 791 8054
                   </p>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-lg mb-2">Social</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    LinkedIn / Twitter / Instagram
-                  </p>
+                  <h3 className="font-semibold text-lg mb-4">Social</h3>
+                  <SocialIcons 
+                    iconClassName="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center text-muted-foreground hover:bg-accent-blue hover:text-white hover:border-accent-blue transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue focus-visible:ring-offset-2"
+                  />
                 </div>
               </div>
 
-              {/* Map Embed Placeholder */}
-              <div className="mt-10 w-full aspect-video bg-muted rounded-xl border border-border flex items-center justify-center">
-                <span className="text-muted-foreground font-medium">Static Map Embed</span>
+              {/* Google Maps Embed */}
+              <div className="mt-10 w-full aspect-video rounded-xl border border-border overflow-hidden">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3922.654575140963!2d7.436166375038374!3d10.527848989606227!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104d4b54c407298b%3A0xdbee36e9e1ccdd47!2sPassion%20trust!5e0!3m2!1sen!2sng!4v1791038529794!5m2!1sen!2sng"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen={true}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full h-full"
+                ></iframe>
               </div>
             </div>
 

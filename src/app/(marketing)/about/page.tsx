@@ -118,7 +118,7 @@ export default function About() {
       </section>
 
       {/* 5. Leadership Shell */}
-      <section className="py-20 bg-surface">
+      {/* <section className="py-20 bg-surface">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
           <SectionHeading 
             centered
@@ -136,7 +136,7 @@ export default function About() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* 6. Closing CTA */}
       <section className="py-24 bg-bg-dark text-center relative overflow-hidden">

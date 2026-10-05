@@ -11,6 +11,7 @@ export async function submitContactEnquiry(formData: FormData) {
     phone: formData.get("phone") as string,
     message: formData.get("message") as string,
   };
+console.log(data);
 
   if (!data.purpose || !data.fullName || !data.email || !data.message) {
     return { success: false, error: "Missing required fields." };
@@ -19,6 +20,7 @@ export async function submitContactEnquiry(formData: FormData) {
   const subject = `New Contact Enquiry from ${data.fullName}`;
   
   const result = await submitWeb3Form(data, subject);
+  console.log({result});
   
   if (result.success) {
     return { success: true };

@@ -27,6 +27,7 @@ export async function submitWeb3Form(data: Record<string, any>, subject: string)
         });
 
         const result = await response.json();
+        console.log(result);
         return { success: response.ok, data: result };
     } catch (error) {
         console.error("Web3Forms submission error:", error);

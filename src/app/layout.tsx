@@ -64,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",
-      email: "hello@paragon.ng"
+      email: "paragonresearchers@gmail.com"
     }
   };
 

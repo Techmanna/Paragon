@@ -73,9 +73,9 @@ export default function Services() {
                     View related programmes <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </div>
-                <div className={`bg-muted rounded-2xl aspect-[4/3] flex items-center justify-center ${index % 2 !== 0 ? 'lg:order-1' : ''}`}>
+                {/* <div className={`bg-muted rounded-2xl aspect-[4/3] flex items-center justify-center ${index % 2 !== 0 ? 'lg:order-1' : ''}`}>
                   <span className="text-muted-foreground">[Image Placeholder]</span>
-                </div>
+                </div> */}
               </div>
             </div>
           </section>

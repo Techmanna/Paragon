@@ -15,11 +15,11 @@ interface ProgrammeCardProps {
 export function ProgrammeCard({ slug, name, category, description, imagePlaceholder = "[Image Placeholder]", className }: ProgrammeCardProps) {
   return (
     <Link href={`/programmes/${slug}`} className={cn("block rounded-2xl overflow-hidden border border-border group cursor-pointer hover:-translate-y-1 hover:shadow-md transition-all duration-200 ease-out motion-reduce:transform-none bg-white", className)}>
-      <div className="aspect-[4/3] bg-muted overflow-hidden relative">
+      {/* <div className="aspect-[4/3] bg-muted overflow-hidden relative">
         <div className="absolute inset-0 bg-accent-blue/5 flex items-center justify-center text-muted-foreground/50 group-hover:scale-105 transition-transform duration-300 ease-out motion-reduce:transform-none font-medium">
           {imagePlaceholder}
         </div>
-      </div>
+      </div> */}
       <div className="p-6">
         <Badge variant="pillar" className="mb-3">
           {category}

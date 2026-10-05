@@ -9,10 +9,21 @@ import Image from "next/image";
 
 const navLinks = [
   { name: "About", href: "/about" },
-  { name: "What We Do", href: "/services", hasDropdown: true },
-  { name: "Programmes", href: "/programmes", hasDropdown: true },
-  { name: "Footprint", href: "/footprint" },
-  { name: "Insights", href: "/insights" },
+  // { name: "What We Do", href: "/what-we-do" },
+  { name: "Programmes", href: "/programmes" },
+  { name: "Opportunities", href: "/opportunities" },
+  { name: "Academy", href: "/academy" },
+  { name: "Resources", href: "/resources" },
+  {
+    name: "More",
+    href: "#",
+    hasDropdown: true,
+    subLinks: [
+      { name: "Community", href: "/community" },
+      { name: "Impact", href: "/impact" },
+      { name: "Shop", href: "/shop" },
+    ]
+  },
 ];
 
 export function Header() {
@@ -49,7 +60,7 @@ export function Header() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 h-full flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue rounded p-1">
-           <Image src="/logo.png" alt="Paragon Nigeria" width={100} height={36} className="" />
+            <Image src="/logo.png" alt="Paragon Nigeria" width={100} height={36} className="" />
           </Link>
 
           {/* Desktop Nav */}
@@ -61,17 +72,29 @@ export function Header() {
                     href={link.href}
                     aria-current={pathname === link.href ? "page" : undefined}
                     aria-expanded={link.hasDropdown ? false : undefined}
-                    className={`text-sm font-medium transition-colors hover:text-accent-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue rounded p-1 relative after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:bg-accent-blue after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100 ${pathname === link.href ? "text-accent-blue font-semibold after:scale-x-100" : ""
+                    className={`text-sm font-medium transition-colors hover:text-accent-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue rounded p-1 flex items-center gap-1 relative after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:bg-accent-blue after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100 ${pathname === link.href ? "text-accent-blue font-semibold after:scale-x-100" : ""
                       }`}
                   >
                     {link.name}
+                    {link.hasDropdown && <ChevronDown className="w-4 h-4 ml-0.5" />}
                   </Link>
-                  {/* Minimal dropdown placeholder */}
-                  {/* {link.hasDropdown && (
-                  <div className="absolute top-full left-0 mt-2 w-48 bg-white text-foreground shadow-lg rounded-xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-150 border border-border p-2 focus-within:opacity-100 focus-within:translate-y-0 focus-within:pointer-events-auto">
-                    <div className="text-xs text-muted-foreground px-3 py-2">Submenu items here...</div>
-                  </div>
-                )} */}
+
+                  {/* Dropdown Menu */}
+                  {link.hasDropdown && link.subLinks && (
+                    <div className="absolute top-full left-0 w-48 bg-white text-foreground shadow-lg rounded-xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 border border-border p-2 focus-within:opacity-100 focus-within:translate-y-0 focus-within:pointer-events-auto">
+                      <div className="flex flex-col gap-1">
+                        {link.subLinks.map((subLink) => (
+                          <Link
+                            key={subLink.name}
+                            href={subLink.href}
+                            className="px-3 py-2 text-sm text-foreground hover:text-accent-blue hover:bg-surface rounded-lg transition-colors"
+                          >
+                            {subLink.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>
@@ -79,9 +102,9 @@ export function Header() {
               Contact
             </Link>
             <Button onClick={() => {
-              router.push('/partner')
+              router.push('/join')
             }} className="rounded-full px-6 py-5 bg-accent-blue hover:bg-accent-blue/90 text-white font-semibold border-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent-blue transition-transform duration-150 ease-in-out hover:scale-105 motion-reduce:transform-none">
-              Partner With Us
+              Join Paragon
             </Button>
           </nav>
 
@@ -130,28 +153,16 @@ export function Header() {
                     </button>
                     {expandedMobileMenus[link.name] && (
                       <div className="flex flex-col gap-3 pt-4 pl-4">
-                        <Link
-                          href={link.href}
-                          className="text-lg text-muted-foreground hover:text-accent-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue rounded p-1"
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          Overview
-                        </Link>
-                        {/* Placeholder sub-items */}
-                        <Link
-                          href={`${link.href}/#1`}
-                          className="text-lg text-muted-foreground hover:text-accent-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue rounded p-1"
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          Sub-item 1
-                        </Link>
-                        <Link
-                          href={`${link.href}/#2`}
-                          className="text-lg text-muted-foreground hover:text-accent-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue rounded p-1"
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          Sub-item 2
-                        </Link>
+                        {link.subLinks?.map((subLink) => (
+                          <Link
+                            key={subLink.name}
+                            href={subLink.href}
+                            className="text-lg text-muted-foreground hover:text-accent-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue rounded p-1"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            {subLink.name}
+                          </Link>
+                        ))}
                       </div>
                     )}
                   </div>
@@ -176,8 +187,8 @@ export function Header() {
             </Link>
           </nav>
           <div className="p-6 border-t border-border mt-auto">
-            <Button className="w-full rounded-full py-6 text-lg bg-accent-blue text-white font-semibold hover:bg-accent-blue/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent-blue">
-              Partner With Us
+            <Button onClick={() => router.push('/join')} className="w-full rounded-full py-6 text-lg bg-accent-blue text-white font-semibold hover:bg-accent-blue/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent-blue">
+              Join Paragon
             </Button>
           </div>
         </div>
